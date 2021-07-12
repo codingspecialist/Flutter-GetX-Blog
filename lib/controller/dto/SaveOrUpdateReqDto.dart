@@ -1,8 +1,8 @@
-class UpdateReqDto {
+class SaveOrUpdateReqDto {
   final String? title;
   final String? content;
 
-  UpdateReqDto(this.title, this.content);
+  SaveOrUpdateReqDto(this.title, this.content);
 
   Map<String, dynamic> toJson() => {
         "title": title,

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_blog/controller/dto/CMRespDto.dart';
-import 'package:flutter_blog/controller/dto/UpdateReqDto.dart';
+import 'package:flutter_blog/controller/dto/SaveOrUpdateReqDto.dart';
 import 'package:flutter_blog/domain/post/post.dart';
 import 'package:flutter_blog/domain/post/post_provider.dart';
 import 'package:flutter_blog/util/convert_utf8.dart';
@@ -10,8 +10,25 @@ import 'package:get/get_connect/http/src/response/response.dart';
 class PostRepository {
   final PostProvider _postProvider = PostProvider();
 
+  Future<Post> save(String title, String content) async {
+    SaveOrUpdateReqDto saveReqDto = SaveOrUpdateReqDto(title, content);
+    Response response = await _postProvider.save(saveReqDto.toJson());
+    dynamic body = response.body;
+    dynamic convertBody = convertUtf8ToObject(body);
+    CMRespDto cmRespDto = CMRespDto.fromJson(convertBody);
+
+    if (cmRespDto.code == 1) {
+      print("글쓰기 성공");
+      Post post = Post.fromJson(cmRespDto.data);
+      return post;
+    } else {
+      print("글쓰기 실패");
+      return Post();
+    }
+  }
+
   Future<Post> updateById(int id, String title, String content) async {
-    UpdateReqDto updateReqDto = UpdateReqDto(title, content);
+    SaveOrUpdateReqDto updateReqDto = SaveOrUpdateReqDto(title, content);
     Response response =
         await _postProvider.updateById(id, updateReqDto.toJson());
     dynamic body = response.body;

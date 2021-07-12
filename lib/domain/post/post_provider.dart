@@ -17,4 +17,7 @@ class PostProvider extends GetConnect {
 
   Future<Response> updateById(int id, Map data) =>
       put("$host/post/$id", data, headers: {"Authorization": jwtToken ?? ""});
+
+  Future<Response> save(Map data) =>
+      post("$host/post", data, headers: {"Authorization": jwtToken ?? ""});
 }

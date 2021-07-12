@@ -3,7 +3,6 @@ import 'package:flutter_blog/controller/post_controller.dart';
 import 'package:flutter_blog/controller/user_controller.dart';
 
 import 'package:flutter_blog/size.dart';
-import 'package:flutter_blog/util/jwt.dart';
 import 'package:flutter_blog/view/pages/post/write_page.dart';
 import 'package:flutter_blog/view/pages/user/login_page.dart';
 import 'package:flutter_blog/view/pages/user/user_info.dart';
@@ -14,6 +13,7 @@ import 'detail_page.dart';
 
 class HomePage extends StatelessWidget {
   var refreshKey = GlobalKey<RefreshIndicatorState>();
+  var scaffodKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +25,17 @@ class HomePage extends StatelessWidget {
     //p.findAll();
 
     return Scaffold(
+      key: scaffodKey,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          if (scaffodKey.currentState!.isDrawerOpen) {
+            scaffodKey.currentState!.openEndDrawer();
+          } else {
+            scaffodKey.currentState!.openDrawer();
+          }
+        },
+        child: Icon(Icons.code),
+      ),
       drawer: _navigation(context),
       appBar: AppBar(
         title: Text("${u.isLogin}"),
@@ -73,7 +84,7 @@ class HomePage extends StatelessWidget {
             children: [
               TextButton(
                 onPressed: () {
-                  Get.to(WritePage());
+                  Get.to(() => WritePage());
                 },
                 child: Text(
                   "글쓰기",
@@ -87,7 +98,9 @@ class HomePage extends StatelessWidget {
               Divider(),
               TextButton(
                 onPressed: () {
-                  Get.to(UserInfo());
+                  //Navigator.pop(context);
+                  scaffodKey.currentState!.openEndDrawer();
+                  Get.to(() => UserInfo());
                 },
                 child: Text(
                   "회원정보보기",

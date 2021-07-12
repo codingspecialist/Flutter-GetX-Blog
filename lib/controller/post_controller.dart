@@ -13,6 +13,13 @@ class PostController extends GetxController {
     findAll();
   }
 
+  Future<void> save(String title, String content) async {
+    Post post = await _postRepository.save(title, content);
+    if (post.id != null) {
+      this.posts.add(post);
+    }
+  }
+
   Future<void> updateById(int id, String title, String content) async {
     Post post = await _postRepository.updateById(id, title, content);
     if (post.id != null) {
