@@ -18,7 +18,7 @@ class UserRepository {
     dynamic body = response.body;
 
     dynamic convertBody = convertUtf8ToObject(body);
-    CMRespDto cmRespDto = CMRespDto.fromJson(convertBody);
+    CMRespDto cmRespDto = CMRespDto.fromJson(body);
 
     if (cmRespDto.code == 1) {
       User principal = User.fromJson(cmRespDto.data);
